@@ -1,0 +1,653 @@
+/* ==========================================================================
+   ASANTE CHURCH INTERNATIONAL — DESIGN SYSTEM
+   This file defines the visual language for the whole site.
+   Change values in :root to re-theme the entire site from one place.
+   ========================================================================== */
+
+/* -------------------- 1. COLOR VARIABLES -------------------- */
+:root {
+  --primary-color: #3b1f6e;      /* deep purple — header, footer, headings, dark buttons */
+  --primary-dark: #261246;       /* darker purple — hover states, footer */
+  --secondary-color: #6b46b8;    /* lighter purple — supporting accent */
+  --accent-color: #c9a227;       /* gold — call-to-action buttons, highlights */
+  --accent-dark: #a9850f;        /* darker gold — hover states */
+  --background-color: #ffffff;   /* main page background */
+  --background-alt: #f9f7fd;     /* light lavender — alternate section background */
+  --text-color: #1f1a2e;         /* main body text */
+  --text-muted: #5b5670;         /* secondary/lighter text */
+  --border-color: #e5def2;       /* subtle borders and dividers */
+
+  /* Spacing scale — use these instead of random px values */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  /* Layout */
+  --container-max-width: 1280px;
+  --radius: 10px;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.35s ease;
+}
+
+/* -------------------- 2. RESET / BASE -------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+  overflow-x: hidden; /* safety net against horizontal scroll */
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+/* Respect users who've asked for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* -------------------- 3. TYPOGRAPHY -------------------- */
+/* clamp(min, preferred, max) lets font size scale smoothly between
+   phones and 4K TVs without separate breakpoints for every size. */
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--primary-color);
+}
+
+h1 { font-size: clamp(2.25rem, 4vw + 1rem, 4.5rem); }
+h2 { font-size: clamp(1.75rem, 2.5vw + 1rem, 3rem); }
+h3 { font-size: clamp(1.4rem, 1.5vw + 1rem, 2rem); }
+h4 { font-size: clamp(1.15rem, 1vw + 1rem, 1.5rem); }
+
+p {
+  font-size: clamp(1rem, 0.3vw + 0.9rem, 1.15rem);
+  color: var(--text-color);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.section-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: var(--space-xs);
+}
+
+/* -------------------- 4. LAYOUT / CONTAINERS -------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-sm);
+}
+
+.section {
+  padding-block: var(--space-xl);
+}
+
+.section-alt {
+  background-color: var(--background-alt);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* Responsive grid helpers — stack on mobile, expand on larger screens */
+.grid-2 { grid-template-columns: repeat(1, 1fr); }
+.grid-3 { grid-template-columns: repeat(1, 1fr); }
+.grid-4 { grid-template-columns: repeat(1, 1fr); }
+
+@media (min-width: 640px) {
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 1024px) {
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* -------------------- 5. BUTTONS -------------------- */
+.btn {
+  display: inline-block;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast),
+              border-color var(--transition-fast),
+              transform var(--transition-fast);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: var(--primary-dark);
+}
+.btn-primary:hover {
+  background-color: var(--accent-dark);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--background-color);
+  border-color: var(--background-color);
+}
+.btn-outline:hover {
+  background-color: var(--background-color);
+  color: var(--primary-color);
+}
+
+.btn-dark {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+.btn-dark:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Touch-friendly minimum size on mobile */
+@media (max-width: 480px) {
+  .btn {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+/* -------------------- 6. CARDS -------------------- */
+.card {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(59, 31, 110, 0.12);
+}
+
+/* -------------------- 7. ACCESSIBILITY: FOCUS STATES -------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--accent-color);
+  outline-offset: 2px;
+}
+/* -------------------- 8. HEADER / NAVIGATION -------------------- */
+.site-header {
+  background-color: var(--primary-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: var(--space-sm);
+}
+
+.logo {
+  color: #ffffff;
+  font-family: 'Georgia', serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+.logo span {
+  color: var(--accent-color);
+}
+
+.main-nav ul {
+  display: flex;
+  gap: var(--space-md);
+}
+.main-nav a {
+  color: #ffffff;
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+.main-nav a:hover {
+  color: var(--accent-color);
+}
+
+/* Hamburger button (hidden on desktop) */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.menu-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+@media (max-width: 1279px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: min(80%, 320px);
+    height: 100vh;
+    background-color: var(--primary-color);
+    padding: var(--space-2xl) var(--space-md);
+    transition: right var(--transition-normal);
+  }
+  .main-nav.is-open {
+    right: 0;
+  }
+  .main-nav ul {
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .menu-toggle.is-active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .menu-toggle.is-active span:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle.is-active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+}
+
+/* -------------------- 9. FOOTER -------------------- */
+.site-footer {
+  background-color: var(--primary-dark);
+  color: #ffffff;
+  padding-top: var(--space-xl);
+}
+.footer-inner {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--space-lg);
+  padding-bottom: var(--space-lg);
+}
+@media (min-width: 768px) {
+  .footer-inner {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.footer-col h4 {
+  color: #ffffff;
+  margin-bottom: var(--space-xs);
+}
+.footer-bottom {
+  text-align: center;
+  padding-block: var(--space-sm);
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+/* -------------------- 10. HERO & CTA -------------------- */
+.hero {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  color: #ffffff;
+  padding-block: var(--space-2xl);
+  text-align: center;
+}
+.hero h1 {
+  color: #ffffff;
+}
+.hero-subtext {
+  color: rgba(255,255,255,0.85);
+  max-width: 640px;
+  margin-inline: auto;
+  margin-block: var(--space-sm);
+}
+.hero-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: var(--space-md);
+}
+
+.cta-section {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  text-align: center;
+  padding-block: var(--space-xl);
+}
+.cta-section h2 {
+  color: #ffffff;
+  margin-bottom: var(--space-sm);
+}
+/* -------------------- 11. CORE PAGES -------------------- */
+.leader-card { text-align: center; }
+.leader-photo-placeholder,
+.sermon-thumb-placeholder,
+.gallery-item-placeholder {
+  background-color: var(--background-alt);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius);
+}
+.leader-photo-placeholder {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto var(--space-sm);
+}
+.sermon-thumb-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin-bottom: var(--space-sm);
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.schedule-table th, .schedule-table td {
+  text-align: left;
+  padding: var(--space-sm);
+  border-bottom: 1px solid var(--border-color);
+}
+.schedule-table th {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.event-card { position: relative; }
+.event-date-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--primary-color);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: var(--space-xs) var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+.event-day { font-size: 1.4rem; font-weight: 700; line-height: 1; }
+.event-month { font-size: 0.75rem; text-transform: uppercase; }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+}
+.gallery-item-placeholder {
+  aspect-ratio: 1 / 1;
+}
+@media (min-width: 640px) {
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 1024px) {
+  .gallery-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+.about-grid {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+@media (min-width: 768px) {
+  .about-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.contact-layout {
+  display: grid;
+  gap: var(--space-xl);
+}
+@media (min-width: 900px) {
+  .contact-layout { grid-template-columns: 1fr 1.3fr; }
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.contact-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+}
+.contact-form input,
+.contact-form textarea {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  resize: vertical;
+}
+.service-list li {
+  padding: var(--space-xs) 0;
+  border-bottom: 1px solid var(--border-color);
+}
+.values-list li, .faith-statement p {
+  margin-bottom: var(--space-sm);
+  color: var(--text-color);
+}
+
+/* -------------------- 12. ALERT MESSAGES -------------------- */
+.alert-message {
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  margin-bottom: var(--space-sm);
+  font-weight: 600;
+}
+.alert-success {
+  background-color: #e6f4ea;
+  color: #1e4620;
+  border: 1px solid #a9d6b0;
+}
+.alert-error {
+  background-color: #fdecea;
+  color: #611a15;
+  border: 1px solid #f3b4ae;
+}
+/* -------------------- 13. ACCESSIBILITY -------------------- */
+
+/* Skip link: hidden until a keyboard user presses Tab */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--accent-color);
+  color: var(--primary-dark);
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+  z-index: 200;
+}
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-xs);
+}
+
+/* Text for screen readers only (invisible on screen) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Darker gold for small labels on white, so they are easier to read */
+.section-eyebrow { color: #8a6d0b; }
+.hero .section-eyebrow,
+.cta-section .section-eyebrow { color: var(--accent-color); }
+
+/* Footer: make text readable on the dark navy background */
+.site-footer .text-muted,
+.site-footer p { color: rgba(255, 255, 255, 0.8); }
+.site-footer a { text-decoration: underline; }
+.site-footer a:hover { color: var(--accent-color); }
+.footer-heading {
+  color: #ffffff;
+  font-size: 1.15rem;
+  margin-bottom: var(--space-xs);
+}
+
+/* Mobile menu: hide closed links from the Tab key, bigger tap target */
+@media (max-width: 1279px) {
+  .main-nav {
+    visibility: hidden;
+    transition: right var(--transition-normal), visibility var(--transition-normal);
+  }
+  .main-nav.is-open { visibility: visible; }
+  .menu-toggle { width: 44px; height: 44px; }
+}
+
+/* Contact form: one wrapper per field, and visible error text */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.field-error {
+  color: #611a15;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+/* -------------------- 14. SPAM PROTECTION -------------------- */
+/* The honeypot box is moved off-screen: people never see it, bots still find it */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+/* -------------------- 15. RESPONSIVE FIXES -------------------- */
+
+/* Smaller starting size for the main heading on very small phones,
+   so long words like "International" never get cut off */
+h1 { font-size: clamp(1.9rem, 4vw + 0.8rem, 4.5rem); }
+
+/* Long words may break onto a new line instead of running off the screen */
+h1, h2, h3, h4, p, li { overflow-wrap: break-word; }
+
+/* Large screens and TVs: make everything bigger and the page wider.
+   Almost every size on this site uses rem, so raising the base size
+   scales the whole site together. */
+@media (min-width: 1920px) {
+  html { font-size: 112.5%; }
+  :root { --container-max-width: 1500px; }
+}
+@media (min-width: 2560px) {
+  html { font-size: 137.5%; }
+  :root { --container-max-width: 1800px; }
+}
+@media (min-width: 3200px) {
+  html { font-size: 175%; }
+  :root { --container-max-width: 2200px; }
+}
+/* -------------------- 16. CARD IMAGES -------------------- */
+.card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  margin-bottom: var(--space-sm);
+}
+/* -------------------- 17. POLISH -------------------- */
+
+/* Error pages (404 and 500) */
+.error-page {
+  text-align: center;
+  padding-block: var(--space-2xl);
+}
+.error-page p {
+  max-width: 560px;
+  margin: var(--space-sm) auto;
+}
+
+/* Hero: a soft glow of the accent colour in the top-right corner */
+.hero {
+  background:
+    radial-gradient(circle at 85% 15%, color-mix(in srgb, var(--accent-color) 22%, transparent), transparent 45%),
+    linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+}
+
+/* Sections fade in gently as you scroll (only when JavaScript is on) */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* No movement for reduced-motion users, and everything shows when printing */
+@media (prefers-reduced-motion: reduce), print {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

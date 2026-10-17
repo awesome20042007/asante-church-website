@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Give — Asante Church International{% endblock %}
+{% block content %}
+<section class="section container">
+  <p class="section-eyebrow">Support the Ministry</p>
+  <h1>Give</h1>
+  <p class="text-muted">{{ church_info.giving_instructions|default:"Giving details to be provided by Asante Church International." }}</p>
+</section>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Asante Church International — Kasangati{% endblock %}
+{% block meta_description %}Asante Church International — a welcoming Pentecostal church in Kasangati Town Council, Uganda. Join us for worship, fellowship, and community.{% endblock %}
+
+{% block content %}
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="section-eyebrow">Kasangati Town Council</p>
+    <h1>Welcome to Asante Church International</h1>
+    <p class="hero-subtext">A warm, welcoming community of faith, worship, and fellowship.</p>
+    <div class="hero-buttons">
+      <a href="{% url 'about' %}" class="btn btn-primary">Plan Your Visit</a>
+      <a href="{% url 'sermons' %}" class="btn btn-outline">Watch Sermons</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WELCOME ===================== -->
+<section class="section container welcome-section">
+  <p class="section-eyebrow">Welcome</p>
+  <h2>A Home for Everyone</h2>
+  <p class="text-muted">{{ church_info.short_description|default:"Content to be provided by Asante Church International." }}</p>
+  {% if church_info.bible_verse %}<p class="text-muted"><em>{{ church_info.bible_verse }}</em></p>{% endif %}
+</section>
+
+<!-- ===================== SERVICE INFO ===================== -->
+<section class="section section-alt">
+  <div class="container">
+    <p class="section-eyebrow">Join Us</p>
+    <h2>Service Times</h2>
+    {% if services %}
+      <ul class="service-list">
+        {% for s in services %}
+          <li><strong>{{ s.name }}</strong> — {{ s.get_day_display }}, {{ s.start_time|time:"g:i A" }}{% if s.end_time %} – {{ s.end_time|time:"g:i A" }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">Content to be provided by Asante Church International.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ===================== ABOUT PREVIEW ===================== -->
+<section class="section container">
+  <p class="section-eyebrow">Who We Are</p>
+  <h2>About Asante Church International</h2>
+  <p class="text-muted">{{ church_info.mission|default:"Content to be provided by Asante Church International." }}</p>
+  <a href="{% url 'about' %}" class="btn btn-dark">Learn more about our church</a>
+</section>
+
+<!-- ===================== MINISTRIES ===================== -->
+<section class="section section-alt">
+  <div class="container">
+    <p class="section-eyebrow">Get Involved</p>
+    <h2>Our Ministries</h2>
+    {% if ministries %}
+      <div class="grid grid-3">
+        {% for m in ministries %}
+          <div class="card">
+            {% if m.image %}
+              <img src="{{ m.image.url }}" alt="{{ m.name }}" class="card-image" loading="lazy" decoding="async">
+            {% endif %}
+            <h3>{{ m.name }}</h3>
+            <p class="text-muted">{{ m.description|default:"Description to be provided." }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">Content to be provided by Asante Church International.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ===================== UPCOMING EVENTS ===================== -->
+<section class="section container">
+  <p class="section-eyebrow">What's Happening</p>
+  <h2>Upcoming Events</h2>
+  {% if upcoming_events %}
+    <div class="grid grid-3">
+      {% for e in upcoming_events %}
+        <div class="card event-card">
+          {% if e.image %}
+            <img src="{{ e.image.url }}" alt="{{ e.title }}" class="card-image" loading="lazy" decoding="async">
+          {% endif %}
+          <div class="event-date-badge">
+            <span class="event-day">{{ e.date|date:"d" }}</span>
+            <span class="event-month">{{ e.date|date:"M" }}</span>
+          </div>
+          <h3>{{ e.title }}</h3>
+          <p class="text-muted">{{ e.date|date:"l, j F Y" }}{% if e.start_time %} · {{ e.start_time|time:"g:i A" }}{% if e.end_time %} – {{ e.end_time|time:"g:i A" }}{% endif %}{% endif %}</p>
+          <p class="text-muted">{{ e.description|default:"" }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <p style="margin-top: var(--space-md);"><a href="{% url 'events' %}" class="btn btn-dark">See All Events</a></p>
+  {% else %}
+    <p class="text-muted">Content to be provided by Asante Church International.</p>
+  {% endif %}
+</section>
+
+<!-- ===================== LATEST SERMON ===================== -->
+<section class="section section-alt">
+  <div class="container">
+    <p class="section-eyebrow">Media</p>
+    <h2>Latest Sermon</h2>
+    {% if latest_sermon %}
+      <h3>{{ latest_sermon.title }}</h3>
+      <p class="text-muted">{{ latest_sermon.speaker }} — {{ latest_sermon.date }}</p>
+    {% else %}
+      <p class="text-muted">Content to be provided by Asante Church International.</p>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ===================== GALLERY PREVIEW ===================== -->
+<section class="section container">
+  <p class="section-eyebrow">Gallery</p>
+  <h2>Moments From Our Church</h2>
+  {% if gallery_images %}
+    <div class="gallery-grid">
+      {% for img in gallery_images %}
+        <img src="{{ img.image.url }}" alt="{{ img.title|default:'Church photo' }}" loading="lazy" decoding="async" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:var(--radius);">
+      {% endfor %}
+    </div>
+    <p style="margin-top: var(--space-md);"><a href="{% url 'gallery' %}" class="btn btn-dark">See All Photos</a></p>
+  {% else %}
+    <p class="text-muted">Content to be provided by Asante Church International.</p>
+  {% endif %}
+</section>
+
+<!-- ===================== CALL TO ACTION ===================== -->
+<section class="cta-section">
+  <div class="container cta-inner">
+    <h2>We'd Love to Welcome You</h2>
+    <a href="{% url 'contact' %}" class="btn btn-primary">Get in Touch</a>
+  </div>
+</section>
+
+<!-- ===================== LOCATION ===================== -->
+<section class="section container">
+  <p class="section-eyebrow">Find Us</p>
+  <h2>Our Location</h2>
+  <p class="text-muted">{{ church_info.address|default:"Kasangati Town Council, Uganda" }}</p>
+  {% if church_info.maps_url %}<a href="{{ church_info.maps_url }}" class="btn btn-outline" style="color:var(--primary-color); border-color:var(--primary-color);" target="_blank" rel="noopener">Get Directions <span class="visually-hidden">(opens in a new tab)</span></a>{% endif %}
+</section>
+
+{% endblock %}

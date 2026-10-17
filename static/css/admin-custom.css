@@ -1,0 +1,70 @@
+/* ==========================================================================
+   ASANTE CHURCH INTERNATIONAL — ADMIN DASHBOARD BRANDING
+   Overrides Django Admin's default blue-grey theme with our purple/gold palette.
+   ========================================================================== */
+
+:root {
+  --primary: #3b1f6e;
+  --primary-dark: #261246;
+  --accent: #c9a227;
+}
+
+/* Top header bar */
+#header {
+  background: var(--primary-dark);
+  color: #fff;
+}
+#site-name a {
+  color: #fff;
+  font-family: Georgia, serif;
+  font-weight: 700;
+}
+#site-name a span {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+/* Module/section headers (e.g. "AUTHENTICATION AND AUTHORIZATION") */
+.module h2, .module caption, .inline-group h2 {
+  background: var(--primary);
+}
+
+/* Links */
+a:link, a:visited {
+  color: var(--primary);
+}
+a:focus, a:hover {
+  color: var(--accent);
+}
+
+/* Buttons */
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+  background: var(--accent);
+  color: var(--primary-dark);
+  border-radius: 6px;
+  font-weight: 600;
+}
+.button:hover, input[type=submit]:hover {
+  background: #a9850f;
+}
+.button.default, input[type=submit].default {
+  background: var(--primary);
+  color: #fff;
+}
+.button.default:hover {
+  background: var(--primary-dark);
+}
+
+/* Login page */
+.login #header {
+  background: var(--primary-dark);
+}
+.login .submit-row input {
+  background: var(--accent);
+  color: var(--primary-dark);
+}
+
+/* Selected row highlight */
+.selected {
+  background: #f6f1e4;
+}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contact — Asante Church International{% endblock %}
+{% block meta_description %}Get in touch with Asante Church International — location, phone, email, and a contact form.{% endblock %}
+{% block content %}
+<section class="section container contact-layout">
+  <div>
+    <p class="section-eyebrow">Get in Touch</p>
+    <h1>Contact Us</h1>
+    <p class="text-muted"><strong>Address:</strong> {{ church_info.address|default:"To be provided" }}</p>
+    <p class="text-muted"><strong>Phone:</strong> {{ church_info.phone|default:"To be provided" }}</p>
+    <p class="text-muted"><strong>Email:</strong> {{ church_info.email|default:"To be provided" }}</p>
+    {% if church_info.maps_url %}
+      <p><a href="{{ church_info.maps_url }}" class="btn btn-dark" target="_blank" rel="noopener">Get Directions <span class="visually-hidden">(opens in a new tab)</span></a></p>
+    {% endif %}
+  </div>
+
+  <form class="contact-form" method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      {% if field.name == 'website' %}
+        <div class="hp-field" aria-hidden="true">
+          {{ field.label_tag }}
+          {{ field }}
+        </div>
+      {% else %}
+        <div class="form-field">
+          {{ field.label_tag }}
+          {{ field }}
+          {% for error in field.errors %}
+            <p class="field-error" role="alert">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <button type="submit" class="btn btn-dark">Send Message</button>
+  </form>
+</section>
+{% endblock %}

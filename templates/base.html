@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Asante Church International{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Asante Church International — a welcoming community of faith in Kasangati Town Council.{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ church_info.name|default:'Asante Church International' }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ church_info.short_description|default:'A welcoming community of faith in Kasangati Town Council, Uganda.' }}{% endblock %}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ request.build_absolute_uri }}">
+  {% if church_info.logo %}<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ church_info.logo.url }}">{% endif %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <meta name="theme-color" content="#3b1f6e">
+  {% if church_info.favicon %}
+    <link rel="icon" href="{{ church_info.favicon.url }}">
+  {% else %}
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%233b1f6e'/%3E%3Ctext x='50' y='68' font-size='60' text-anchor='middle' fill='%23c9a227' font-family='Georgia,serif' font-weight='700'%3EA%3C/text%3E%3C/svg%3E">
+  {% endif %}
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ===================== HEADER / NAVIGATION ===================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="{% url 'home' %}" class="logo">
+        Asante Church <span>International</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Home</a></li>
+          <li><a href="{% url 'about' %}" {% if request.resolver_match.url_name == 'about' %}aria-current="page"{% endif %}>About</a></li>
+          <li><a href="{% url 'leadership' %}" {% if request.resolver_match.url_name == 'leadership' %}aria-current="page"{% endif %}>Leadership</a></li>
+          <li><a href="{% url 'ministries' %}" {% if request.resolver_match.url_name == 'ministries' %}aria-current="page"{% endif %}>Ministries</a></li>
+          <li><a href="{% url 'services' %}" {% if request.resolver_match.url_name == 'services' %}aria-current="page"{% endif %}>Services</a></li>
+          <li><a href="{% url 'events' %}" {% if request.resolver_match.url_name == 'events' %}aria-current="page"{% endif %}>Events</a></li>
+          <li><a href="{% url 'sermons' %}" {% if request.resolver_match.url_name == 'sermons' %}aria-current="page"{% endif %}>Sermons</a></li>
+          <li><a href="{% url 'gallery' %}" {% if request.resolver_match.url_name == 'gallery' %}aria-current="page"{% endif %}>Gallery</a></li>
+          <li><a href="{% url 'give' %}" {% if request.resolver_match.url_name == 'give' %}aria-current="page"{% endif %}>Give</a></li>
+          <li><a href="{% url 'contact' %}" {% if request.resolver_match.url_name == 'contact' %}aria-current="page"{% endif %}>Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== PAGE CONTENT ===================== -->
+  <main id="main-content">
+    {% if messages %}
+      <div class="container" style="padding-top: var(--space-sm);">
+        {% for message in messages %}
+          <div class="alert-message {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-col">
+        <h2 class="footer-heading">{{ church_info.name|default:"Asante Church International" }}</h2>
+        <p class="text-muted">{{ church_info.address|default:"Kasangati Town Council,Wakiso, Uganda" }}</p>
+        <p class="text-muted">{{ church_info.box_number|default:"WAMPEWO, MAGERE-KITO,P.O BOX 119681" }}</p>
+        {% if church_info.phone %}<p class="text-muted">{{ church_info.phone }}</p>{% endif %}
+        {% if church_info.email %}<p class="text-muted">{{ church_info.email }}</p>{% endif %}
+      </div>
+
+      <div class="footer-col">
+        <h2 class="footer-heading">Connect</h2>
+        <ul class="social-links">
+          {% if social_links %}
+            {% for link in social_links %}
+              <li><a href="{{ link.url }}" aria-label="Follow Asante Church International on {{ link.get_platform_display }}">{{ link.get_platform_display }}</a></li>
+            {% endfor %}
+          {% else %}
+            <li class="text-muted">Social links coming soon</li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h2 class="footer-heading">Visit</h2>
+        {% if church_info.motto %}<p class="text-muted">"{{ church_info.motto }}"</p>{% endif %}
+        {% if church_info.maps_url %}<a href="{{ church_info.maps_url }}" class="text-muted" target="_blank" rel="noopener">Get Directions → <span class="visually-hidden">(opens in a new tab)</span></a>{% endif %}
+      </div>
+    </div>
+    <div class="container">
+      <p class="footer-bottom text-muted">&copy; {% now "Y" %} {{ church_info.name|default:"Asante Church International" }}. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+  {% block extra_scripts %}{% endblock %}
+</body>
+</html>

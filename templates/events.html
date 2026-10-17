@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Events — Asante Church International{% endblock %}
+{% block meta_description %}Upcoming events and programs at Asante Church International.{% endblock %}
+{% block content %}
+<section class="section container">
+  <p class="section-eyebrow">What's Happening</p>
+  <h1>Upcoming Events</h1>
+
+  {% if upcoming_events %}
+    <div class="grid grid-3" style="margin-top: var(--space-lg);">
+      {% for e in upcoming_events %}
+        <div class="card event-card">
+          {% if e.image %}
+            <img src="{{ e.image.url }}" alt="{{ e.title }}" class="card-image" loading="lazy" decoding="async">
+          {% endif %}
+          <div class="event-date-badge">
+            <span class="event-day">{{ e.date|date:"d" }}</span>
+            <span class="event-month">{{ e.date|date:"M" }}</span>
+          </div>
+          <h3>{{ e.title }}</h3>
+          <p class="text-muted">{{ e.date|date:"l, j F Y" }}{% if e.start_time %} · {{ e.start_time|time:"g:i A" }}{% if e.end_time %} – {{ e.end_time|time:"g:i A" }}{% endif %}{% endif %}</p>
+          {% if e.location %}<p class="text-muted">{{ e.location }}</p>{% endif %}
+          <p class="text-muted">{{ e.description|default:"" }}</p>
+          {% if e.registration_url %}
+            <a href="{{ e.registration_url }}" class="btn btn-dark" target="_blank" rel="noopener">Register <span class="visually-hidden">for {{ e.title }} (opens in a new tab)</span></a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Content to be provided by Asante Church International.</p>
+  {% endif %}
+</section>
+{% endblock %}

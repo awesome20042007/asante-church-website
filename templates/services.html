@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Service Times — Asante Church International{% endblock %}
+{% block meta_description %}Service times and schedule for Asante Church International, Kasangati Town Council.{% endblock %}
+{% block content %}
+<section class="section container">
+  <p class="section-eyebrow">Join Us</p>
+  <h1>Service Times</h1>
+  {% if church_info.address %}<p class="text-muted">{{ church_info.address }}</p>{% endif %}
+
+  {% if services %}
+    <table class="schedule-table" style="margin-top: var(--space-lg);">
+      <thead>
+        <tr><th>Service</th><th>Day</th><th>Time</th></tr>
+      </thead>
+      <tbody>
+        {% for s in services %}
+          <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.get_day_display }}</td>
+            <td>{{ s.start_time|time:"g:i A" }}{% if s.end_time %} – {{ s.end_time|time:"g:i A" }}{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="text-muted">Content to be provided by Asante Church International.</p>
+  {% endif %}
+</section>
+{% endblock %}

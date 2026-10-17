@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ministries — Asante Church International{% endblock %}
+{% block meta_description %}Explore the ministries and get involved at Asante Church International.{% endblock %}
+{% block content %}
+<section class="section container">
+  <p class="section-eyebrow">Get Involved</p>
+  <h1>Ministries</h1>
+
+  {% if ministries %}
+    <div class="grid grid-3" style="margin-top: var(--space-lg);">
+      {% for m in ministries %}
+        <div class="card">
+          {% if m.image %}
+            <img src="{{ m.image.url }}" alt="{{ m.name }}" class="card-image" loading="lazy" decoding="async">
+          {% endif %}
+          <h3>{{ m.name }}</h3>
+          <p class="text-muted">{{ m.description|default:"Description to be provided." }}</p>
+          {% if m.contact %}<p class="text-muted"><strong>Contact:</strong> {{ m.contact }}</p>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Content to be provided by Asante Church International.</p>
+  {% endif %}
+</section>
+{% endblock %}

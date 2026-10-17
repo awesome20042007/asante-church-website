@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Leadership — Asante Church International{% endblock %}
+{% block meta_description %}Meet the leadership of Asante Church International in Kasangati Town Council.{% endblock %}
+{% block content %}
+<section class="section container">
+  <p class="section-eyebrow">Our Team</p>
+  <h1>Leadership</h1>
+
+  {% if leaders %}
+    <div class="grid grid-3" style="margin-top: var(--space-lg);">
+      {% for leader in leaders %}
+        <div class="card leader-card">
+          {% if leader.photo %}
+            <img src="{{ leader.photo.url }}" alt="{{ leader.name }}" loading="lazy" decoding="async" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto var(--space-sm);">
+          {% else %}
+            <div class="leader-photo-placeholder"></div>
+          {% endif %}
+          <h3>{{ leader.name }}</h3>
+          <p class="text-muted">{{ leader.position }}</p>
+          <p class="text-muted">{{ leader.biography|default:"Biography to be provided." }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Content to be provided by Asante Church International.</p>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.venv/
+
+# Secrets and local settings -- NEVER upload these
+.env
+
+# Database (holds private data: admin passwords, contact messages)
+db.sqlite3
+db.sqlite3-journal
+
+# Photos uploaded through the dashboard
+media/
+
+# Files collected on the server when the site goes live
+staticfiles/
+
+# Editor and system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

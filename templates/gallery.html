@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gallery — Asante Church International{% endblock %}
+{% block meta_description %}Photos from worship, events, and community life at Asante Church International.{% endblock %}
+{% block content %}
+<section class="section container">
+  <p class="section-eyebrow">Gallery</p>
+  <h1>Photo Gallery</h1>
+
+  {% if images %}
+    <div class="gallery-grid" style="margin-top: var(--space-lg);">
+      {% for img in images %}
+        <img src="{{ img.image.url }}" alt="{{ img.title|default:'Church photo' }}" loading="lazy" decoding="async" style="width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:var(--radius);">
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="text-muted">Content to be provided by Asante Church International.</p>
+  {% endif %}
+</section>
+{% endblock %}
