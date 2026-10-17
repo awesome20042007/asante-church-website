@@ -651,3 +651,46 @@ h1, h2, h3, h4, p, li { overflow-wrap: break-word; }
     transition: none;
   }
 }
+/* -------------------- 18. LOGO -------------------- */
+
+/* Header: emblem on a white circle, next to the church name */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.logo-img {
+  width: 48px;
+  height: 48px;
+  padding: 4px;
+  background: #ffffff;
+  border-radius: 50%;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.logo .logo-text {
+  color: #ffffff;
+  line-height: 1.15;
+}
+.logo .logo-text span {
+  color: var(--accent-color);
+}
+
+/* Home page hero: larger emblem on a white circle above the heading */
+.hero-logo {
+  display: block;
+  width: 132px;
+  height: 132px;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 50%;
+  object-fit: contain;
+  margin: 0 auto var(--space-md);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+@media (max-width: 480px) {
+  .hero-logo {
+    width: 104px;
+    height: 104px;
+  }
+}

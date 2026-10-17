@@ -27,7 +27,8 @@
   <header class="site-header">
     <div class="container header-inner">
       <a href="{% url 'home' %}" class="logo">
-        Asante Church <span>International</span>
+        {% if church_info.logo %}<img src="{{ church_info.logo.url }}" alt="" class="logo-img" width="48" height="48">{% endif %}
+        <span class="logo-text">Asante Church <span>International</span></span>
       </a>
 
       <nav class="main-nav" id="main-nav" aria-label="Main navigation">
