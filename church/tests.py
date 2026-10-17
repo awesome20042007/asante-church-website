@@ -149,3 +149,39 @@ class ImageShrinkTests(TestCase):
         upload = self.make_upload('logo.png', (100, 100), 'PNG', mode='RGBA', color=(255, 0, 0, 128))
         photo = GalleryImage.objects.create(image=upload, title='Png')
         self.assertTrue(photo.image.name.endswith('.png'))
+
+# ---------------------------------------------------------------------------
+# Email notification tests
+# ---------------------------------------------------------------------------
+from django.core import mail  # noqa: E402
+
+
+@override_settings(CONTACT_NOTIFY_EMAIL='church@example.com')
+class ContactEmailTests(TestCase):
+    """A good contact message also emails the church."""
+
+    def test_email_is_sent_with_reply_to(self):
+        self.client.post(reverse('contact'), {
+            'name': 'Grace', 'email': 'grace@example.com',
+            'subject': 'Prayer', 'message': 'Please pray for us.',
+        })
+        self.assertEqual(len(mail.outbox), 1)
+        sent = mail.outbox[0]
+        self.assertEqual(sent.to, ['church@example.com'])
+        self.assertEqual(sent.reply_to, ['grace@example.com'])
+        self.assertIn('Please pray for us.', sent.body)
+
+    def test_spam_sends_no_email(self):
+        self.client.post(reverse('contact'), {
+            'name': 'Bot', 'email': 'bot@example.com',
+            'message': 'Buy now', 'website': 'http://spam.example',
+        })
+        self.assertEqual(len(mail.outbox), 0)
+
+    @override_settings(CONTACT_NOTIFY_EMAIL='')
+    def test_no_email_when_no_address_is_set(self):
+        self.client.post(reverse('contact'), {
+            'name': 'Grace', 'email': 'grace@example.com', 'message': 'Hello',
+        })
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertEqual(ContactMessage.objects.count(), 1)        

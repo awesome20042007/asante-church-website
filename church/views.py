@@ -1,4 +1,8 @@
+import logging
+
+from django.conf import settings
 from django.contrib import messages
+from django.core.mail import EmailMessage
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
@@ -6,15 +10,46 @@ from django.utils import timezone
 from .forms import ContactForm
 from .models import Event, GalleryImage, Leadership, Ministry, Sermon, Service
 
+logger = logging.getLogger(__name__)
+
 # The order days appear in on the website. Sunday first.
 # To start the week on Monday instead, move 'sunday' to the end of this list.
 WEEK_ORDER = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
-#create your views here
+
 def active_services():
     """Active services in week order, then by start time."""
     services = Service.objects.filter(active=True)
     return sorted(services, key=lambda s: (WEEK_ORDER.index(s.day), s.start_time))
+
+
+def send_contact_notification(contact_message):
+    """Email the church a copy of a new contact-form message.
+    A problem here must never stop the visitor's message from being saved."""
+    recipient = settings.CONTACT_NOTIFY_EMAIL
+    if not recipient:
+        return
+
+    subject = f"Website message from {contact_message.name}"
+    if contact_message.subject:
+        subject += f": {contact_message.subject}"
+    subject = " ".join(subject.split())  # one line only; blocks header tricks
+
+    body = (
+        f"Name: {contact_message.name}\n"
+        f"Email: {contact_message.email}\n"
+        f"Phone: {contact_message.phone or '-'}\n"
+        f"Subject: {contact_message.subject or '-'}\n\n"
+        f"{contact_message.message}\n"
+    )
+
+    try:
+        EmailMessage(
+            subject, body, settings.DEFAULT_FROM_EMAIL, [recipient],
+            reply_to=[contact_message.email],
+        ).send()
+    except Exception:
+        logger.exception("Could not send the contact-form email notification.")
 
 
 def home(request):
@@ -74,7 +109,8 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            form.save()
+            contact_message = form.save()
+            send_contact_notification(contact_message)
             messages.success(request, "Thank you — your message has been sent. We'll get back to you soon.")
             form = ContactForm()  # reset the form after success
         else:

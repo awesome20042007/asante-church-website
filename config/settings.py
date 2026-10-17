@@ -51,7 +51,16 @@ CSRF_TRUSTED_ORIGINS = env_list('DJANGO_CSRF_TRUSTED_ORIGINS')
 if env_bool('DJANGO_HTTPS', False):
     SESSION_COOKIE_SECURE = True     # login cookie only travels over https
     CSRF_COOKIE_SECURE = True        # form-protection cookie only travels over https
-    SECURE_HSTS_SECONDS = 3600       # browsers remember "https only" (raised in Stage 19)
+    SECURE_HSTS_SECONDS = 3600       # browsers remember "https only" (raised once everything is confirmed working)
+
+# Switch these on ONLY on the live site, once https:// is confirmed working.
+if env_bool('DJANGO_SSL_REDIRECT', False):
+    SECURE_SSL_REDIRECT = True       # send http:// visitors to https://
+
+if env_bool('DJANGO_PROXY_SSL_HEADER', False):
+    # Only for hosts that put a proxy in front of Django and pass this header along.
+    # Your host will tell you if you need this.
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Always on (these are also Django's defaults; written here so they are visible)
 SESSION_COOKIE_HTTPONLY = True       # JavaScript cannot read the login cookie
@@ -107,7 +116,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # ---------------------------------------------------------------------------
-# Database (SQLite for now; switched to PostgreSQL in Stage 19)
+# Database (SQLite for now; PostgreSQL can be added later if the host offers it)
 # ---------------------------------------------------------------------------
 
 DATABASES = {
@@ -146,8 +155,46 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+# Where "python manage.py collectstatic" gathers every CSS/JS file for the live site.
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+# ---------------------------------------------------------------------------
+# Email (Django 6.1 uses the MAILERS setting)
+#
+# On your laptop, emails are only PRINTED in the terminal window.
+# On the live site, fill in the DJANGO_EMAIL_* values in .env to send real email.
+# ---------------------------------------------------------------------------
+
+if os.environ.get('DJANGO_EMAIL_HOST'):
+    MAILERS = {
+        'default': {
+            'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
+            'OPTIONS': {
+                'host': os.environ['DJANGO_EMAIL_HOST'],
+                'port': int(os.environ.get('DJANGO_EMAIL_PORT') or 587),
+                'username': os.environ.get('DJANGO_EMAIL_HOST_USER', ''),
+                'password': os.environ.get('DJANGO_EMAIL_HOST_PASSWORD', ''),
+                'use_tls': env_bool('DJANGO_EMAIL_USE_TLS', True),
+            },
+        }
+    }
+else:
+    MAILERS = {
+        'default': {
+            'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        }
+    }
+
+DEFAULT_FROM_EMAIL = (
+    os.environ.get('DJANGO_DEFAULT_FROM_EMAIL') or 'Asante Church Website <webmaster@localhost>'
+)
+
+# The church address that receives contact-form messages. Leave empty to turn this off.
+CONTACT_NOTIFY_EMAIL = os.environ.get('DJANGO_CONTACT_NOTIFY_EMAIL', '')
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
